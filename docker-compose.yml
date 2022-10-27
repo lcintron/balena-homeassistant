@@ -4,10 +4,12 @@ volumes:
     mosquitto:
     influxdb:
     grafana:
-    zjs:
     cache:
 services:
   homeassistant:
+    depends_on:
+        - influxdb
+        - mqtt
     build: homeassistant
     ports:
       - "80:8123"
@@ -43,11 +45,18 @@ services:
       - homeassistant
   influxdb:
     image: influxdb:1.8.6
+    ports:
+      - "8086:8086"
+      - "8083:8083"
+    environment:
+      INFLUXDB_DB: homeassistant
     volumes:
       - influxdb:/var/lib/influxdb
   grafana:
     image: grafana/grafana:8.1.2
     volumes:
       - grafana:/var/lib/grafana
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
     ports:
         - "3010:3000/tcp"
