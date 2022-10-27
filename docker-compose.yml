@@ -2,11 +2,15 @@ version: '2'
 volumes:
     config:
     mosquitto:
+    influxdb:
+    grafana:
+    zjs:
+    cache:
 services:
   homeassistant:
     build: homeassistant
     ports:
-      - 80:8123
+      - "80:8123"
     privileged: true
     volumes:
       - 'config:/config'
@@ -27,3 +31,23 @@ services:
       - 'config:/hass-config'
     environment:
       - HC_BASEPATH=/hass-config
+  appdaemon:
+    container_name: app-daemon
+    image: acockburn/appdaemon:latest
+    ports:
+      - "5050:5050"
+    volumes:
+      - config:/conf
+    restart: always
+    depends_on:
+      - homeassistant
+  influxdb:
+    image: influxdb:1.8.6
+    volumes:
+      - influxdb:/var/lib/influxdb
+  grafana:
+    image: grafana/grafana:8.1.2
+    volumes:
+      - grafana:/var/lib/grafana
+    ports:
+        - "3010:3000/tcp"
