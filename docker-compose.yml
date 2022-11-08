@@ -2,7 +2,7 @@ version: '2'
 volumes:
     config:
     mosquitto:
-    influxdb:
+    influxdb2:
     grafana:
     cache:
 services:
@@ -44,14 +44,14 @@ services:
     depends_on:
       - homeassistant
   influxdb:
-    image: influxdb:1.8.6
+    image: influxdb:2.5
     ports:
       - "8086:8086"
-      - "8083:8083"
+      - "8088:8088"
     environment:
       INFLUXDB_DB: homeassistant
     volumes:
-      - influxdb:/var/lib/influxdb
+      - influxdb2:/var/lib/influxdb2
   grafana:
     image: grafana/grafana:8.1.2
     volumes:
