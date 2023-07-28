@@ -1,3 +1,4 @@
+#HA
 FROM homeassistant/home-assistant:stable
 
 COPY start.sh /tmp/start.sh
