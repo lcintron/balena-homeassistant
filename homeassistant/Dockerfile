@@ -1,5 +1,5 @@
 #HA
-FROM homeassistant/home-assistant:stable
+FROM homeassistant/home-assistant:2024.6
 
 COPY start.sh /tmp/start.sh
 
