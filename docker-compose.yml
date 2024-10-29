@@ -53,11 +53,29 @@ services:
       INFLUXDB_DB: homeassistant
     volumes:
       - influxdb2:/var/lib/influxdb2
-  grafana:
-    image: grafana/grafana:8.1.2
+  music-assistant-server:
+    image: ghcr.io/music-assistant/server:latest # <<< Desired release version here (or use beta to get the latest beta version)
+    container_name: music-assistant-server
+    restart: unless-stopped
+    # Network mode must be set to host for MA to work correctly
+    network_mode: host
     volumes:
-      - grafana:/var/lib/grafana
+      - ${USERDIR:-$HOME}/docker/music-assistant-server/data:/data/
+    # privileged caps (and security-opt) needed to mount smb folders within the container
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
+    security_opt:
+      - apparmor:unconfined
     environment:
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
-    ports:
-        - "3010:3000/tcp"
+      # Provide logging level as environment variable.
+      # default=info, possible=(critical, error, warning, info, debug)
+      - LOG_LEVEL=info
+  #grafana:
+  #  image: grafana/grafana:8.1.2
+  #  volumes:
+  #    - grafana:/var/lib/grafana
+  #  environment:
+  #    - GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
+  #  ports:
+  #      - "3010:3000/tcp"
