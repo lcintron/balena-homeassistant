@@ -5,6 +5,7 @@ volumes:
     influxdb2:
     grafana:
     cache:
+    musicassistant:
 services:
   homeassistant:
     depends_on:
@@ -60,7 +61,7 @@ services:
     # Network mode must be set to host for MA to work correctly
     network_mode: host
     volumes:
-      - ${USERDIR:-$HOME}/docker/music-assistant-server/data:/data/
+      - musicassistant:/data/
     # privileged caps (and security-opt) needed to mount smb folders within the container
     cap_add:
       - SYS_ADMIN
