@@ -1,5 +1,5 @@
 #HA
-FROM homeassistant/home-assistant:2024.10
+FROM homeassistant/home-assistant:2025.2
 
 COPY start.sh /tmp/start.sh
 

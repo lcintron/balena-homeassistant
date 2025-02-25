@@ -9,7 +9,7 @@ volumes:
 services:
   homeassistant:
     depends_on:
-        - influxdb
+        # - influxdb
         - mqtt
     build: homeassistant
     ports:
@@ -45,15 +45,15 @@ services:
     restart: always
     depends_on:
       - homeassistant
-  influxdb:
-    image: influxdb:2.5
-    ports:
-      - "8086:8086"
-      - "8088:8088"
-    environment:
-      INFLUXDB_DB: homeassistant
-    volumes:
-      - influxdb2:/var/lib/influxdb2
+  # influxdb:
+  #   image: influxdb:2.5
+  #   ports:
+  #     - "8086:8086"
+  #     - "8088:8088"
+  #   environment:
+  #     INFLUXDB_DB: homeassistant
+  #   volumes:
+  #     - influxdb2:/var/lib/influxdb2
   music-assistant-server:
     image: ghcr.io/music-assistant/server:latest # <<< Desired release version here (or use beta to get the latest beta version)
     container_name: music-assistant-server
