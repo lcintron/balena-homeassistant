@@ -6,6 +6,7 @@ volumes:
     grafana:
     cache:
     musicassistant:
+    esphome:
 services:
   homeassistant:
     depends_on:
@@ -19,6 +20,12 @@ services:
     volumes:
       - 'config:/config'
     restart: always
+  esphome:
+    image: 'ghcr.io/esphome/esphome'
+    ports:
+      - 6052:6052
+    volumes:
+      - 'esphome:/config'
   mqtt:
     build: mqtt
     ports:
